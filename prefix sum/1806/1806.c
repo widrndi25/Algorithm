@@ -1,34 +1,35 @@
 #include <stdio.h>
+#define MIN(x, y) x < y ? x : y
 
-int N, S;
 int numbers[100010];
 
 int main()
 {
+    int N, S;
     scanf("%d %d", &N, &S);
 
     for (int i = 0; i < N; i++)
         scanf("%d", &numbers[i]);
 
-    int start = 0, end = 0, sum = numbers[0], minLength = 987654321;
+    int start = 0, end = 0, sum = numbers[0], length = N + 1;
 
-    while (start <= end)
+    while (start <= end && end < N)
     {
-        if (sum >= S)
+        if (sum < S)
         {
-            minLength = end - start + 1;
+            sum += numbers[++end];
+        }
+        else
+        {
+            length = MIN(length, end - start + 1);
             sum -= numbers[start++];
         }
-        else if (end == N)
-            break;
-        else
-            sum += numbers[end++];
     }
 
-    if (minLength == 987654321)
-        printf("0");
+    if (length == N + 1)
+        printf("0\n");
     else
-        printf("%d", minLength);
+        printf("%d\n", length);
 
     return 0;
 }
